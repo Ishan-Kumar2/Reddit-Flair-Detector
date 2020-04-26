@@ -32,8 +32,8 @@ pretrained_wts=torch.load('./pretrained_wts')
 import praw
 
 
-reddit = praw.Reddit(client_id='XHHTF77rrqH7NA', 
-                     client_secret='0z_mq6DJXF4VjKffFewCSXkmh8Y', 
+reddit = praw.Reddit(client_id='CLIENT_ID', 
+                     client_secret='CLIENT_SECRET', 
                      user_agent='Reddit Classifier')
 
 embedding_dim=50
