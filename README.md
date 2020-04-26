@@ -95,6 +95,14 @@ flask run
 ```
 Then copy and paste the URL on a browser.
 
+## Automated testing
+The webapp can be tested automatically using the /automated_testing method. To do the following add the links to the reddit posts in file.txt, on each line. 
+Then on running the flask app
+``` bash
+http://127.0.0.1:5000/automated_testing
+```
+The output will be stored in sample.json in JSON format
+
 ## Future Work
 - [1.] [Byte Pair Encoding](https://arxiv.org/abs/1508.07909)- Since there are many Out of vocabulary words in the corpus like(COVID-19,coronavirus), I decided to finetune the embedding. The performance should still be compared to BPE as that is not affected by OOV words.
 - [2.] [Transformers](https://arxiv.org/abs/1706.03762)- Using BERT for classifying both title and model class. 
