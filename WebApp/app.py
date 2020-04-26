@@ -15,6 +15,7 @@ from Model_used import Model,fastText
 from flask import Flask,request,render_template
 import numpy as np
 from utils2 import Dataset
+import json
 
 flair_dict={
 
@@ -27,6 +28,7 @@ flair_dict={
 
 import torch
 pretrained_wts=torch.load('./pretrained_wts')
+
 import praw
 
 
@@ -86,6 +88,7 @@ def home():
 @app.route('/predict',methods=['POST'])
 def predict():
     if request.method=='POST':
+        
         data=request.form['message']
         
         id=url_extractor(data)
@@ -102,9 +105,9 @@ def predict():
         x_context=torch.tensor(x_context).unsqueeze(0)
             
         x2=torch.tensor(x2).unsqueeze(0)
-            
-        print(x2)
-        print(x2.shape)
+        
+
+        
         
         
       
@@ -126,52 +129,85 @@ def predict():
         #preds=model.predict(x)
         
     return render_template('result.html',prediction=flair_dict[int(prediction)])
-    
+   
+ 
+@app.route('/predict_auto',methods=['POST'])
+def predict_auto():
+    if request.method=='POST':
+        
+        data=request.form['message']
+        try:
+            id=url_extractor(data)
+        except TypeError:
+            return 
+        try:
+            title,body,num=get_data(id)
+        except TypeError:
+            return 
+        
+        
+        dataset=Dataset(data_title=title,data_context=body,data_score=num)
+        
+        
+        x,x_context,x2=dataset[0]
+        x=torch.tensor(x).unsqueeze(0)
+            
+        x_context=torch.tensor(x_context).unsqueeze(0)
+            
+        x2=torch.tensor(x2).unsqueeze(0)
+        
 
+        
+        
+        
+      
+        ##vect=torch.tensor(data)
+        ## model=Model(*args,**kwargs)
+        model.load_state_dict(torch.load('./MODEL_GD'))
+        #model_context=FastText(*args,**kwargs)
+        
+        model_context.load_state_dict(torch.load('./MODEL_CONTEXTGD'))
+        
+        model.eval()
+        model_context.eval()
+        
+        context=model_context(x_context)
+        preds=model(data=x,num_data=x2.float(),context=context)
+        preds=preds.squeeze(0)
+        prediction=torch.max(preds,0)[1]
+        
+        #preds=model.predict(x)
+        
+    return flair_dict[int(prediction)]
+   
+ 
 
 @app.route('/automated_testing',methods=['GET'])        
 def automated_testing():
-	#files={'upload_file':open('file.txt','rb')}
-	r=requests.post('https://www.reddit.com/r/india/comments/g7ra97/india_press_freedom_rapidly_deteriorating/')
-	print(r)
+        dict_out={}
+        
+        files={'upload_file':open('file.txt','rb')}
+        a=files['upload_file'].read()
+        a=str(a)
+        print(a)
+        #a=a[1:]
+        a=a.split('\n')
+        a=a[0][2:].split('\\n')
+        
+        for url in a:
+            
+            
+            dict={'message':url}
+            r=requests.post('http://127.0.0.1:5000/predict_auto',dict)
+            
+            dict_out[url]=r.text
+            print(r.text)
+        json_object = json.dumps(dict_out)
+        with open("sample.json", "w") as outfile: 
+            outfile.write(json_object)
+        return render_template('result.html',prediction=r.text)
 	
 
-"""
-@app.route('/',methods=['GET','POST'])
-def hello_world():
-    errors=[]
-    results={}
-    if request.method=='GET':
-        
-        return render_template('index.html',value="req_leleo")
-    
-    if request.method=='POST':
-        url=request.data.decode('utf-8')
-        #try:
-            
-        #r=requests.get(url)
-        #print(r.text)
-            
-        #except:
-            #print("NONON")
-            #url="LKD"
-            #errors.append(
-                    #"Unable to ")
-            
-        if 'file' not in request.files:
-            print('file not uploaded')
-            return
-        file=request.files['file']
-        print(f"File {file}")
-        image=file.read()
-        
-        print(f"File {image}")
-        #category, flower_name=get_flower_name(image)
-        
-        #tensor=get_tensor(image)
-        
-        return render_template('result.html',flair_name="HEllo",category=url)
-"""
     
    
 

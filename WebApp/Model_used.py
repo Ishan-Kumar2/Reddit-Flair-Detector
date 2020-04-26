@@ -82,6 +82,7 @@ class Model(nn.Module):
         context=self.apply_attention(final_hid=hidden_,all_hid=context)
         hidden=self.dropout(torch.cat([hidden,context],dim=1))
         
+        
         output=self.fc1(hidden)
         
         return output
