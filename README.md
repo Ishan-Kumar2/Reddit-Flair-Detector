@@ -94,6 +94,7 @@ export FLASK_APP=app.py
 flask run
 ```
 Then copy and paste the URL on a browser.
+To make it run the credientials for PRAW also have to be added.
 
 ## Automated testing
 The webapp can be tested automatically using the /automated_testing method. To do the following add the links to the reddit posts in file.txt, on each line. 
