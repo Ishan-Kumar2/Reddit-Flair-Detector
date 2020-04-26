@@ -1,0 +1,1 @@
+web: gunicorn Whatever.py:app --log-level debug
