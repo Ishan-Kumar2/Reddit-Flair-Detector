@@ -27,7 +27,7 @@ The data can be loaded in the form of a CSV Reddit's API PRAW.
 The CSV file for the dataset used for training this model is present in dataset folder as train.csv and val.csv. The process of extracting the data and applying basic processing is present in [Data_Acquistion.ipynb](https://github.com/Ishan-Kumar2/Reddit-Flair-Detector/blob/master/notebooks/Data_Acquistion.ipynb)
 
 ### EDA
-Exploratory data anylsis can be found in [EDA.ipynb](https://github.com/Ishan-Kumar2/Reddit-Flair-Detector/blob/master/notebooks/EDA.ipynb). Using this analysis, the features to be used were decided and certain flairs were removed due to lack of Data. 
+Exploratory data anylsis can be found in [EDA.ipynb](https://github.com/Ishan-Kumar2/Reddit-Flair-Detector/blob/master/notebooks/EDA.ipynb). Using this analysis, the features to be used were decided and certain flairs were removed due to lack of Data. The final data consists of around 450 posts.
 
 # Model
 
