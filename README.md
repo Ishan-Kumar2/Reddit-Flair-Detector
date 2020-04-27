@@ -63,7 +63,7 @@ With the intuition that certain keywords would be extremely essential in classfi
 * Loss function Negative Log likelihood
 
 
-## Seq2seq model with fastText
+## Seq2seq and fastText model
 In this attempt I decided to concatenate the output of the fastText model for context and the BiLSTM model. In addition I also used features number_comments(Number of commments) and Score(score of the post), reason in EDA. These features were first passed through a feed forward layer. Output was concatenated with that of title model and context model.
 
 ![Attention](https://github.com/Ishan-Kumar2/Reddit-Flair-Detector/blob/master/utils/images/Attention.png)
